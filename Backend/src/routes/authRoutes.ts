@@ -13,10 +13,7 @@ router.get('/test', (req: express.Request, res: express.Response) => {
 
 // Public routes
 router.post('/signup', register);
-router.post('/register', register); // Alternative endpoint
 router.post('/login', login);
-
-
 
 
 export default router;

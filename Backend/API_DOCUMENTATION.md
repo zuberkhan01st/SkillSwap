@@ -14,6 +14,7 @@ Most endpoints require JWT authentication. Include the token in the Authorizatio
 Authorization: Bearer <your-jwt-token>
 ```
 
+
 ## API Endpoints
 
 ### 🔐 Authentication Routes (`/auth`)
@@ -24,8 +25,8 @@ POST /auth/register
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "john@example.com",
+  "name": "Priya Sharma",
+  "email": "priya.sharma@gmail.com",
   "password": "password123"
 }
 ```
@@ -36,7 +37,7 @@ POST /auth/login
 Content-Type: application/json
 
 {
-  "email": "john@example.com",
+  "email": "priya.sharma@gmail.com",
   "password": "password123"
 }
 ```
@@ -56,11 +57,11 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "name": "John Smith",
-  "location": "New York",
-  "bio": "Software developer passionate about learning",
-  "skillsOffered": ["javascript", "react", "node.js"],
-  "skillsWanted": ["python", "machine learning"],
+  "name": "Rajesh Kumar",
+  "location": "Bangalore, Karnataka",
+  "bio": "Software developer passionate about learning new technologies and teaching others",
+  "skillsOffered": ["javascript", "react", "node.js", "mongodb"],
+  "skillsWanted": ["python", "machine learning", "data science", "aws"],
   "availability": {
     "weekdays": true,
     "weekends": true,
@@ -93,12 +94,12 @@ profilePhoto: <file>
 
 #### Search Users
 ```http
-GET /user/search?skill=javascript&location=New York&page=1&limit=10
+GET /user/search?skill=javascript&location=Mumbai&page=1&limit=10
 ```
 
 #### Get Users by Skill
 ```http
-GET /user/skill/javascript?page=1&limit=10
+GET /user/skill/python?page=1&limit=10
 ```
 
 #### Get User Profile by ID
@@ -116,10 +117,10 @@ Content-Type: application/json
 
 {
   "providerId": "60d0fe4f5311236168a109ca",
-  "skillRequested": "javascript",
-  "skillOffered": "python",
-  "message": "I'd love to learn JavaScript from you!",
-  "scheduledDate": "2025-08-15T10:00:00.000Z"
+  "skillRequested": "python",
+  "skillOffered": "react",
+  "message": "Hi! I would love to learn Python from you. I can teach you React in return!",
+  "scheduledDate": "2025-08-15T15:30:00.000Z"
 }
 ```
 
@@ -145,7 +146,8 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "scheduledDate": "2025-08-20T14:00:00.000Z"
+  "scheduledDate": "2025-08-20T19:00:00.000Z",
+  "duration": 60
 }
 ```
 
@@ -167,6 +169,33 @@ PUT /swap/{requestId}/complete
 Authorization: Bearer <token>
 ```
 
+### 📹 Meeting Routes (`/swap/meetings`)
+
+#### Get Upcoming Meetings
+```http
+GET /swap/meetings/upcoming
+Authorization: Bearer <token>
+```
+
+#### Get Meeting Details
+```http
+GET /swap/meetings/{meetingId}
+Authorization: Bearer <token>
+```
+
+#### Update Meeting Status
+```http
+PUT /swap/meetings/{meetingId}/status
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "status": "in_progress"
+}
+
+# Available statuses: scheduled, in_progress, completed, cancelled, no_show
+```
+
 ### ⭐ Rating Routes (`/rating`)
 
 #### Rate User
@@ -178,7 +207,7 @@ Content-Type: application/json
 {
   "swapRequestId": "60d0fe4f5311236168a109cb",
   "rating": 5,
-  "feedback": "Great teacher! Very patient and knowledgeable."
+  "feedback": "Excellent teacher! Ankit explained Python concepts very clearly and patiently. Highly recommend!"
 }
 ```
 
@@ -207,7 +236,7 @@ Content-Type: application/json
 
 {
   "rating": 4,
-  "feedback": "Updated feedback"
+  "feedback": "Updated feedback: Great session with detailed explanations!"
 }
 ```
 
@@ -215,7 +244,7 @@ Content-Type: application/json
 
 #### Get All Users
 ```http
-GET /admin/users?page=1&limit=10&status=all&role=all&search=john
+GET /admin/users?page=1&limit=10&status=all&role=all&search=priya
 Authorization: Bearer <admin-token>
 
 # status: all, active, inactive, banned, unbanned
@@ -229,7 +258,7 @@ Authorization: Bearer <admin-token>
 Content-Type: application/json
 
 {
-  "reason": "Inappropriate content"
+  "reason": "Inappropriate behavior during skill exchange session"
 }
 ```
 
@@ -240,8 +269,8 @@ Authorization: Bearer <admin-token>
 Content-Type: application/json
 
 {
-  "title": "Platform Update",
-  "content": "We've added new features to improve your experience!",
+  "title": "New Features Added - Meeting Integration!",
+  "content": "Namaste SkillSwap community! We've added Jit.si video meeting integration for seamless skill exchange sessions. Happy learning!",
   "type": "announcement"
 }
 ```

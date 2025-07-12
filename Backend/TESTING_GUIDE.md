@@ -8,75 +8,75 @@
 
 ### 1. Register Two Users
 
-**User 1 (Alice) - JavaScript Developer:**
+**User 1 (Priya) - Frontend Developer from Bangalore:**
 ```bash
 curl -X POST http://localhost:3000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Alice Johnson",
-    "email": "alice@example.com",
+    "name": "Priya Sharma",
+    "email": "priya.sharma@gmail.com",
     "password": "password123",
-    "skillsOffered": ["JavaScript", "React", "Node.js"],
-    "skillsWanted": ["Python", "Machine Learning"],
-    "bio": "Full-stack developer looking to learn AI/ML"
+    "skillsOffered": ["JavaScript", "React", "CSS", "HTML"],
+    "skillsWanted": ["Python", "Machine Learning", "Data Science"],
+    "bio": "Frontend developer from Bangalore, passionate about learning AI/ML technologies"
   }'
 ```
 
-**User 2 (Bob) - Python Developer:**
+**User 2 (Ankit) - Data Scientist from Mumbai:**
 ```bash
 curl -X POST http://localhost:3000/api/auth/register \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Bob Smith",
-    "email": "bob@example.com",
+    "name": "Ankit Kumar",
+    "email": "ankit.kumar@gmail.com",
     "password": "password123",
-    "skillsOffered": ["Python", "Machine Learning", "Data Analysis"],
-    "skillsWanted": ["React", "Frontend Development"],
-    "bio": "Data scientist interested in web development"
+    "skillsOffered": ["Python", "Machine Learning", "Data Science", "Pandas"],
+    "skillsWanted": ["React", "Frontend Development", "JavaScript"],
+    "bio": "Data scientist from Mumbai, interested in learning modern web development"
   }'
 ```
 
 Save the tokens from both responses!
 
-### 2. Search for Users (as Alice)
+### 2. Search for Users (as Priya)
 
 ```bash
 curl -X GET "http://localhost:3000/api/users/search?skill=Python" \
-  -H "Authorization: Bearer YOUR_ALICE_TOKEN"
+  -H "Authorization: Bearer YOUR_PRIYA_TOKEN"
 ```
 
-### 3. Create Swap Request (Alice wants to learn Python from Bob)
+### 3. Create Swap Request (Priya wants to learn Python from Ankit)
 
 ```bash
 curl -X POST http://localhost:3000/api/swaps/request \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_ALICE_TOKEN" \
+  -H "Authorization: Bearer YOUR_PRIYA_TOKEN" \
   -d '{
-    "providerId": "BOB_USER_ID_FROM_SEARCH",
+    "providerId": "ANKIT_USER_ID_FROM_SEARCH",
     "skillRequested": "Python",
     "skillOffered": "React",
-    "message": "Hi! I would love to learn Python from you in exchange for React tutoring.",
+    "message": "Hi Ankit! I would love to learn Python and Data Science from you. I can teach you React and modern frontend development in return.",
     "preferredDuration": 60
   }'
 ```
 
-### 4. Accept Swap Request and Schedule Meeting (as Bob)
+### 4. Accept Swap Request and Schedule Meeting (as Ankit)
 
 ```bash
 curl -X PUT http://localhost:3000/api/swaps/SWAP_REQUEST_ID/accept \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer YOUR_BOB_TOKEN" \
+  -H "Authorization: Bearer YOUR_ANKIT_TOKEN" \
   -d '{
-    "scheduledDate": "2025-07-13T14:00:00.000Z",
+    "scheduledDate": "2025-07-13T19:00:00.000Z",
     "duration": 60
   }'
 ```
 
-### 5. Check Upcoming Meetings (as Alice)
+### 5. Check Upcoming Meetings (as Priya)
 
 ```bash
 curl -X GET http://localhost:3000/api/swaps/meetings/upcoming \
-  -H "Authorization: Bearer YOUR_ALICE_TOKEN"
+  -H "Authorization: Bearer YOUR_PRIYA_TOKEN"
 ```
 
 ### 6. Test the Meeting Link
@@ -90,8 +90,8 @@ https://meet.jit.si/skillswap-1720800000000-abc123#config.roomPassword=&config.s
 
 ## Expected Results
 
-✅ **Step 1:** Both users registered successfully with tokens  
-✅ **Step 2:** Search returns Bob as a Python skill provider  
+✅ **Step 1:** Both Priya and Ankit registered successfully with tokens  
+✅ **Step 2:** Search returns Ankit as a Python skill provider  
 ✅ **Step 3:** Swap request created successfully  
 ✅ **Step 4:** Meeting scheduled with real Jit.si link generated  
 ✅ **Step 5:** Upcoming meetings shows the scheduled session  
