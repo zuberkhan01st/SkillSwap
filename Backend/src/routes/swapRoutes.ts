@@ -8,7 +8,10 @@ import {
   rejectSwapRequest,
   deleteSwapRequest,
   completeSwap,
-  getSwapRequestDetails
+  getSwapRequestDetails,
+  getUpcomingMeetings,
+  getMeetingDetails,
+  updateMeetingStatus
 } from '../controllers/swapController';
 
 // All swap routes require authentication
@@ -47,6 +50,22 @@ router.delete('/:requestId', (req, res, next) => {
 // Mark swap as completed (both parties can complete)
 router.put('/:requestId/complete', (req, res, next) => {
   Promise.resolve(completeSwap(req, res)).catch(next);
+});
+
+// Meeting-related routes
+// Get upcoming meetings for the user
+router.get('/meetings/upcoming', (req, res, next) => {
+  Promise.resolve(getUpcomingMeetings(req, res)).catch(next);
+});
+
+// Get meeting details by ID
+router.get('/meetings/:meetingId', (req, res, next) => {
+  Promise.resolve(getMeetingDetails(req, res)).catch(next);
+});
+
+// Update meeting status (join, complete, cancel)
+router.put('/meetings/:meetingId/status', (req, res, next) => {
+  Promise.resolve(updateMeetingStatus(req, res)).catch(next);
 });
 
 export default router;

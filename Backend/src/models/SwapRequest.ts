@@ -9,6 +9,7 @@ export interface ISwapRequest extends Document {
   status: 'pending' | 'accepted' | 'rejected' | 'completed' | 'cancelled';
   scheduledDate?: Date;
   completedDate?: Date;
+  meeting?: mongoose.Types.ObjectId; // Reference to Meeting
   createdAt: Date;
   updatedAt: Date;
 }
@@ -51,6 +52,10 @@ const swapRequestSchema = new Schema<ISwapRequest>({
   },
   completedDate: {
     type: Date
+  },
+  meeting: {
+    type: Schema.Types.ObjectId,
+    ref: 'Meeting'
   }
 }, {
   timestamps: true,
