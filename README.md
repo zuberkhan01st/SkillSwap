@@ -203,7 +203,7 @@ Based on the provided mockup ([View Mockup](https://link.excalidraw.com/l/65VNwv
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/skillswap.git
+   git clone https://github.com/zuberkhan01st/SkillSwap
    cd SkillSwap
    ```
 
