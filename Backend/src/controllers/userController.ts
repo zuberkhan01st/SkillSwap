@@ -5,14 +5,8 @@ import mongoose from 'mongoose';
 
 interface AuthedRequest extends Request {
   user?: string | JwtPayload;
-  file?: {
-    filename: string;
-    path: string;
-    mimetype: string;
-    size: number;
-  };
+  file?: Express.Multer.File;
 }
-
 // Get current user profile
 export const getMe = async (req: AuthedRequest, res: Response) => {
   try {
@@ -171,19 +165,21 @@ export const searchUsers = async (req: Request, res: Response) => {
       location, 
       page = 1, 
       limit = 10,
-      sortBy = 'averageRating',
-      sortOrder = 'desc'
+      sortBy = 'name',
+      sortOrder = 'asc'
     } = req.query;
 
     const pageNum = parseInt(page as string);
     const limitNum = parseInt(limit as string);
     const skip = (pageNum - 1) * limitNum;
 
-    // Build search query
+    // Build search query - handle missing fields gracefully
     const searchQuery: any = {
-      isPublic: true,
-      isActive: true,
-      isBanned: false
+      $and: [
+        { $or: [{ isPublic: { $ne: false } }, { isPublic: { $exists: false } }] },
+        { $or: [{ isActive: { $ne: false } }, { isActive: { $exists: false } }] },
+        { $or: [{ isBanned: { $ne: true } }, { isBanned: { $exists: false } }] }
+      ]
     };
 
     if (skill) {
@@ -198,9 +194,11 @@ export const searchUsers = async (req: Request, res: Response) => {
       };
     }
 
-    // Build sort object
+    // Build sort object - use safe fields
     const sortObj: any = {};
-    sortObj[sortBy as string] = sortOrder === 'desc' ? -1 : 1;
+    const validSortFields = ['name', 'createdAt', 'averageRating', 'totalSwaps'];
+    const sortField = validSortFields.includes(sortBy as string) ? sortBy as string : 'name';
+    sortObj[sortField] = sortOrder === 'desc' ? -1 : 1;
 
     const users = await User.find(searchQuery)
       .select('-password -email')
@@ -250,24 +248,24 @@ export const getUsersBySkill = async (req: Request, res: Response) => {
     const limitNum = parseInt(limit as string);
     const skip = (pageNum - 1) * limitNum;
 
-    const users = await User.find({
+    // More flexible query to handle missing fields
+    const searchQuery = {
       skillsOffered: { $in: [new RegExp(skill, 'i')] },
-      isPublic: true,
-      isActive: true,
-      isBanned: false
-    })
+      $and: [
+        { $or: [{ isPublic: { $ne: false } }, { isPublic: { $exists: false } }] },
+        { $or: [{ isActive: { $ne: false } }, { isActive: { $exists: false } }] },
+        { $or: [{ isBanned: { $ne: true } }, { isBanned: { $exists: false } }] }
+      ]
+    };
+
+    const users = await User.find(searchQuery)
     .select('-password -email')
-    .sort({ averageRating: -1, totalSwaps: -1 })
+    .sort({ name: 1 }) // Use a safe sort field
     .skip(skip)
     .limit(limitNum)
     .lean();
 
-    const total = await User.countDocuments({
-      skillsOffered: { $in: [new RegExp(skill, 'i')] },
-      isPublic: true,
-      isActive: true,
-      isBanned: false
-    });
+    const total = await User.countDocuments(searchQuery);
 
     res.status(200).json({
       success: true,
@@ -302,11 +300,14 @@ export const getUserProfile = async (req: Request, res: Response) => {
       });
     }
 
+    // More flexible query for backward compatibility
     const user = await User.findOne({
       _id: userId,
-      isPublic: true,
-      isActive: true,
-      isBanned: false
+      $and: [
+        { $or: [{ isPublic: { $ne: false } }, { isPublic: { $exists: false } }] },
+        { $or: [{ isActive: { $ne: false } }, { isActive: { $exists: false } }] },
+        { $or: [{ isBanned: { $ne: true } }, { isBanned: { $exists: false } }] }
+      ]
     }).select('-password -email').lean();
 
     if (!user) {
@@ -339,10 +340,11 @@ export const uploadProfilePhoto = async (req: AuthedRequest, res: Response) => {
       });
     }
 
+    // Check if file is uploaded (when multer is installed)
     if (!req.file) {
       return res.status(400).json({
         success: false,
-        error: 'No file uploaded'
+        error: 'No file uploaded. Install multer package for file upload functionality.'
       });
     }
 
