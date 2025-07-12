@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Eye, EyeOff, ArrowRight } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function SignupPage() {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ export default function SignupPage() {
     email: "",
     password: "",
     confirmPassword: "",
+    role: "", // Add role field
     agreeToTerms: false,
   })
   const [showPassword, setShowPassword] = useState(false)
@@ -34,14 +36,22 @@ export default function SignupPage() {
       alert("Please agree to the terms and conditions")
       return
     }
+    if (!formData.role) {
+      alert("Please select your role")
+      return
+    }
 
     setIsLoading(true)
 
     // Simulate signup process
     setTimeout(() => {
       setIsLoading(false)
-      // Redirect to profile setup after signup
-      router.push("/profile/setup")
+      // Redirect based on role
+      if (formData.role === "admin") {
+        router.push("/admin")
+      } else {
+        router.push("/profile/setup")
+      }
     }, 1000)
   }
 
@@ -50,14 +60,16 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white flex items-center justify-center p-4">
+    <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white flex items-center justify-center p-4 font-mono">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <Link href="/" className="text-3xl font-bold">
-            SkillSwap
+          <Link href="/" className="text-3xl font-bold tracking-tight">
+            SKILLSWAP
           </Link>
-          <h1 className="text-2xl font-bold mt-6 mb-2">Create Your Account</h1>
-          <p className="text-gray-600 dark:text-gray-400">Start trading skills with our global community</p>
+          <h1 className="text-2xl font-bold mt-6 mb-2 tracking-tight">CREATE YOUR ACCOUNT</h1>
+          <p className="text-gray-600 dark:text-gray-400 tracking-wide">
+            START TRADING SKILLS WITH OUR GLOBAL COMMUNITY
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -85,6 +97,19 @@ export default function SignupPage() {
               className="h-12"
               required
             />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="role">Role</Label>
+            <Select value={formData.role} onValueChange={(value) => handleInputChange("role", value)}>
+              <SelectTrigger className="h-12">
+                <SelectValue placeholder="Select your role" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="user">User</SelectItem>
+                <SelectItem value="admin">Admin</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="space-y-2">
@@ -155,14 +180,14 @@ export default function SignupPage() {
 
           <Button
             type="submit"
-            className="w-full h-12 bg-black text-white dark:bg-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200"
+            className="w-full h-12 bg-black text-white dark:bg-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 font-mono tracking-wide"
             disabled={isLoading}
           >
             {isLoading ? (
-              "Creating Account..."
+              "CREATING ACCOUNT..."
             ) : (
               <>
-                Create Account
+                CREATE ACCOUNT
                 <ArrowRight className="ml-2 h-4 w-4" />
               </>
             )}
@@ -170,10 +195,10 @@ export default function SignupPage() {
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            Already have an account?{" "}
+          <p className="text-sm text-gray-600 dark:text-gray-400 tracking-wide">
+            ALREADY HAVE AN ACCOUNT?{" "}
             <Link href="/login" className="font-medium hover:underline">
-              Sign in
+              SIGN IN
             </Link>
           </p>
         </div>
