@@ -5,6 +5,12 @@ import mongoose from 'mongoose';
 
 interface AuthedRequest extends Request {
   user?: string | JwtPayload;
+  file?: {
+    filename: string;
+    path: string;
+    mimetype: string;
+    size: number;
+  };
 }
 
 // Get current user profile

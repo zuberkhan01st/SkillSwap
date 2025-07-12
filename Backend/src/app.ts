@@ -77,12 +77,6 @@ app.get('/', async (req: Request, res: Response) => {
     })
 })
 
-app.get('/', (req, res) => {
-  res.status(200).json({
-    message: 'Welcome to the API'
-  });
-});
-
 //Routes
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
