@@ -8,6 +8,9 @@ import cors from 'cors';
 import path from 'path';
 import authRoutes from './routes/authRoutes';
 import userRoutes from './routes/userRoutes';
+import swapRoutes from './routes/swapRoutes';
+import ratingRoutes from './routes/ratingRoutes';
+import adminRoutes from './routes/adminRoutes';
 
 // Initialize Express
 const app = express();
@@ -81,8 +84,11 @@ app.get('/', (req, res) => {
 });
 
 //Routes
-app.use('/auth',authRoutes);
-app.use('/user',userRoutes);
+app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
+app.use('/swap', swapRoutes);
+app.use('/rating', ratingRoutes);
+app.use('/admin', adminRoutes);
 
 // 404 Handler
 
