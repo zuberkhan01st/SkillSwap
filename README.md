@@ -32,7 +32,7 @@ SkillSwap is a revolutionary platform that connects developers and learners acro
 
 ---
 
-# SkillSwap Screenshots  || DemoVideo(https://youtu.be/TXAiKH4tMf4?si=7lvtc1RmBWmB7RHd)
+# SkillSwap Screenshots  || [Demo Video](https://youtu.be/TXAiKH4tMf4?si=7lvtc1RmBWmB7RHd)[Demo Video](https://youtu.be/TXAiKH4tMf4?si=7lvtc1RmBWmB7RHd)
 
 ## Home Page
 ![Home](./Public/Home.png)
