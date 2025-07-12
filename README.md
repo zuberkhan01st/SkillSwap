@@ -18,6 +18,8 @@
 
 ---
 
+
+
 ## 🌟 **What is SkillSwap?**
 
 SkillSwap is a revolutionary platform that connects developers and learners across India, enabling them to exchange skills in a mutually beneficial way. Whether you're a React expert wanting to learn Python, or a Django developer eager to master frontend technologies, SkillSwap makes skill exchange seamless and rewarding.
@@ -29,6 +31,27 @@ SkillSwap is a revolutionary platform that connects developers and learners acro
 - **⭐ Trust-based:** Rating and feedback system for quality assurance
 
 ---
+
+# SkillSwap Screenshots
+
+## Home Page
+![Home](./Public/Home.png)
+
+## Categories Page
+![Categories](./Public/Categories.png)
+
+## User Profile
+![User Profile](./Public/User.png)
+
+
+## Explore Page
+![Explore Page](./Public/ExplorePage.png)
+
+
+## Admin Dashboard
+![Admin Dashboard](./Public/AdminDashboard.png)
+
+
 
 ## 📋 **Problem Statement Compliance**
 
