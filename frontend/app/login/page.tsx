@@ -16,17 +16,36 @@ export default function LoginPage() {
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    setError(null)
 
-    // Simulate login process
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        setError(data.message || "Login failed")
+        setIsLoading(false)
+        return
+      }
+
+      // Optionally handle token/session here
+
       setIsLoading(false)
       router.push("/")
-    }, 1000)
+    } catch (err) {
+      setError("Something went wrong. Please try again.")
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -82,6 +101,10 @@ export default function LoginPage() {
                   </Button>
                 </div>
               </div>
+
+              {error && (
+                <div className="text-red-500 text-sm text-center">{error}</div>
+              )}
 
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign in"}
